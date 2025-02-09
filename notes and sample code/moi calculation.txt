@@ -1,0 +1,50 @@
+To calculate the Moment of Inertia (MoI) of a robot with the given parameters, we can assume a simplified model where the robot is treated as a **rectangular plate with uniform mass distribution**. The formula for the MoI of a rectangular plate rotating about its center is:
+
+$$
+I = \frac{1}{12} m (a^2 + b^2)
+$$
+
+Where:
+- $$m$$ is the mass of the object,
+- $$a$$ and $$b$$ are the length and width of the rectangle.
+
+### Given Parameters:
+- Mass ($$m$$) = 68 kg,
+- Length ($$a$$) = 14.5 in ($$0.3683$$ m),
+- Width ($$b$$) = 14.5 in ($$0.3683$$ m).
+
+### Calculation:
+Converting all measurements to SI units:
+- $$a = b = 0.3683 \, \text{m}$$.
+
+Substitute into the formula:
+$$
+I = \frac{1}{12} \times 68 \times (0.3683^2 + 0.3683^2)
+$$
+
+First, calculate $$a^2 + b^2$$:
+$$
+a^2 + b^2 = 0.3683^2 + 0.3683^2 = 0.1356 + 0.1356 = 0.2712
+$$
+
+Now calculate $$I$$:
+$$
+I = \frac{1}{12} \times 68 \times 0.2712
+$$
+$$
+I = \frac{1}{12} \times 18.4416 = 1.5368 \, \text{kg·m}^2
+$$
+
+### Final Result:
+The estimated Moment of Inertia (MoI) of the robot is approximately **1.54 kg·m²** assuming a uniform mass distribution.
+
+Citations:
+[1] https://choreo.autos/usage/estimating-moi/
+[2] https://homes.cs.washington.edu/~todorov/courses/amath533/FeatherstoneOrin00.pdf
+[3] https://pathplanner.dev/robot-config.html
+[4] https://www.studocu.com/en-us/document/northview-high-school/ap-physics-1-algebra-based/swerve-robot-moi-moment-of-inertia/83068025
+[5] https://horizondiscovery.com/en/frequently-asked-questions/transfection-and-transduction/how-do-i-determine-moi
+[6] https://www.reddit.com/r/FRC/comments/uxyxo5/calculating_moment_of_inertia_of_drivetrain_with/
+[7] https://www.youtube.com/watch?v=LG9cAdSwhh4
+[8] https://support.densorobotics.com/support/solutions/articles/60000697374-finding-robot-arm-moment-of-inertia-specifications
+[9] https://kb.10xgenomics.com/hc/en-us/articles/360036019572-What-is-MOI-and-how-do-I-assess-it
