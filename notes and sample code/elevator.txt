@@ -1,0 +1,24 @@
+// Global variables
+double targetPosition = 0; // Position for desired floor
+double currentPosition = 0; // Current elevator position
+int floorHeight = 100; // Distance per floor in encoder units
+
+// Function to move elevator to a specified floor
+void moveToFloor(int floor) {
+    targetPosition = floor * floorHeight;
+    elevatorMotor.set(ControlMode.Position, targetPosition);
+}
+
+// Periodic loop (executed every loop cycle)
+void periodic() {
+    currentPosition = elevatorMotor.getSelectedSensorPosition(); // Read current position
+
+    // Adjust motor power based on load (if using a load sensor)
+    double loadFactor = loadSensor.getValue(); 
+    elevatorMotor.set(ControlMode.PercentOutput, loadFactor * desiredMotorPower);  
+
+    // Check if near target position
+    if (Math.abs(currentPosition - targetPosition) < tolerance) {
+        elevatorMotor.set(ControlMode.PercentOutput, 0); // Stop motor
+    }
+}
