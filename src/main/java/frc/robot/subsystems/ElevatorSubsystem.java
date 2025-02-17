@@ -18,51 +18,31 @@ public class ElevatorSubsystem extends SubsystemBase {
     SparkMax Leader = new SparkMax(8, MotorType.kBrushless);
     SparkMax Follower = new SparkMax(9, MotorType.kBrushless);
 
-
     public ElevatorSubsystem() {
-    /*
-    * Create new SPARK MAX configuration objects. These will store the
-    * configuration parameters for the SPARK MAXes that we will set below.
-    */
-    SparkMaxConfig globalConfig = new SparkMaxConfig();
-    SparkMaxConfig LeaderConfig = new SparkMaxConfig();
-    SparkMaxConfig FollowerConfig = new SparkMaxConfig();
+        /*
+        * Set parameters that will apply to all SPARKs. We will also use this as
+        * the left leader config.
+        */
+        // ...existing code...
+    }
 
-    /*
-    * Set parameters that will apply to all SPARKs. We will also use this as
-    * the left leader config.
-    */
-    globalConfig
-        .smartCurrentLimit(50)
-        .idleMode(IdleMode.kBrake);
+    // Method to set the speed of the motors
+    public void setMotorSpeed(double speed) {
+        Leader.set(speed);
+        Follower.set(speed);
+    }
 
-    // Apply the global config and invert since it is on the opposite side
-    LeaderConfig
-        .apply(globalConfig);
-        //.inverted(true);
+    // Method to stop the motors
+    public void stopMotors() {
+        Leader.set(0);
+        Follower.set(0);
+    }
 
-    // Apply the global config and set the leader SPARK for follower mode
-    FollowerConfig
-        .apply(globalConfig)
-        .follow(Leader);
-
-    /*
-    * Apply the configuration to the SPARKs.
-    *
-    * kResetSafeParameters is used to get the SPARK MAX to a known state. This
-    * is useful in case the SPARK MAX is replaced.
-    *
-    * kPersistParameters is used to ensure the configuration is not lost when
-    * the SPARK MAX loses power. This is useful for power cycles that may occur
-    * mid-operation.
-    */
-    Leader.configure(LeaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    Follower.configure(FollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-}
-
-public void RunElevator() {
-    Leader.set(m_functionsController.getLeftY());
-}
-
-
+    @Override
+    public void periodic() {
+        // This method will be called once per scheduler run
+        // You can add code here to update motor speeds based on controller input
+        double speed = m_functionsController.getLeftY();
+        setMotorSpeed(speed);
+    }
 }
