@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import java.util.List;
 
 /*
@@ -35,12 +36,13 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   //private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  //XboxController m_functionsController = new XboxController(1);
+  XboxController m_functionsController = new XboxController(1);
+
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(m_functionsController);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -60,11 +62,6 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
-            
-    m_elevator.setDefaultCommand(
-        new RunCommand(
-            () -> m_elevator.setMotorSpeed(m_driverController.getLeftY()),
-            m_elevator));
   }
 
   /**
