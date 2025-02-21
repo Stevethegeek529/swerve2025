@@ -55,9 +55,9 @@ public class ArmSubsystem extends SubsystemBase {
       Boolean rightBumper = m_functionsController.getRightBumper();
 
       if (leftBumper) {
-        setIntakeMotorSpeed(0.5); //forward
+        setIntakeMotorSpeed(-0.5); //forward
       } else if (rightBumper) {
-        setIntakeMotorSpeed(-0.5); // backward
+        setIntakeMotorSpeed(0.5); // backward
       } else {
         setIntakeMotorSpeed(0); //stop intake motor
       }

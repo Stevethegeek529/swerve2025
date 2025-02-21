@@ -19,7 +19,8 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
-//import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -36,18 +37,19 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ArmSubsystem m_armSubsystem;
+  private final ElevatorSubsystem m_elevatorSubsystem;
   //private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_functionsController = new XboxController(1);
-
-  //private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(m_functionsController);
-
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+  
   public RobotContainer() {
+    // Initialize subsystems with the functions controller
+    m_armSubsystem = new ArmSubsystem(m_functionsController);
+    m_elevatorSubsystem = new ElevatorSubsystem(m_functionsController);
+
     // Configure the button bindings
     configureButtonBindings();
 
