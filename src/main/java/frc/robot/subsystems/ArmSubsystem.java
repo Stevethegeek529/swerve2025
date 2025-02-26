@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import frc.robot.subsystems.ArmSubsystem;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.AbsoluteEncoder;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,21 +12,30 @@ public class ArmSubsystem extends SubsystemBase {
     private final SparkMax armMotor;
     private final SparkMax intakeMotor;
     private final XboxController m_functionsController;
+    private final AbsoluteEncoder m_armEncoder;
 
   public ArmSubsystem(XboxController controller) {
     // Constructor for ArmSubsystem
     armMotor = new SparkMax(6, MotorType.kBrushless);
     intakeMotor = new SparkMax(7, MotorType.kBrushless);
+    m_armEncoder = armMotor.getAbsoluteEncoder();
 
     m_functionsController = controller;
   }
 
   // Method to set the speed of the motors
   public void setArmMotorSpeed(double speed) {
-    // Method to set the speed of the motors
-    armMotor.set(speed);
-  }
+    double position = m_armEncoder.getPosition();
 
+    //ensure the arm does not go below the lower limit
+    if ((position <= 0.05 && speed < 0) || (position >= 0.3 && speed > 0)) {
+      armMotor.set(0); //stop the motor if it tries to go past the limits
+    } else {
+      speed *= 0.5; //reduce the speed of the arm motor
+      armMotor.set(speed); // set the motor speed if within limits
+    }
+  }
+    //armMotor.set(speed);}
   // Method to set the speed of the intake motor
   public void setIntakeMotorSpeed(double speed) {
     intakeMotor.set(speed);
@@ -63,5 +73,7 @@ public class ArmSubsystem extends SubsystemBase {
       }
 
       SmartDashboard.putNumber("intake motor speed", intakeMotor.get());
+      SmartDashboard.putNumber("arm motor speed", armMotor.get());
+      SmartDashboard.putNumber("arm motor position", m_armEncoder.getPosition());
       }
   }

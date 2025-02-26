@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-//import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,15 +21,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     private SparkMax Leader;
     private SparkMax Follower;
     private XboxController m_functionsController;
+    private final RelativeEncoder m_elevatorEncoder;
 
     public ElevatorSubsystem(XboxController controller) {
-        /*
-        * Set parameters that will apply to all SPARKs. We will also use this as
-        * the left leader config.
-        */
    
         Leader = new SparkMax(8, MotorType.kBrushless);
         Follower = new SparkMax(9, MotorType.kBrushless);
+        m_elevatorEncoder = Leader.getAlternateEncoder();
 
         m_functionsController = controller;
 
