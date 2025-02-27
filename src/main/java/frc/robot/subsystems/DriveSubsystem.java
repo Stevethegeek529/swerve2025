@@ -209,7 +209,7 @@ public class DriveSubsystem extends SubsystemBase {
     return m_frontLeft;
   }
 
-/*  public void setupPathPlanner() {
+  public void setupPathPlanner() {
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
     RobotConfig config;
@@ -241,6 +241,17 @@ AutoBuilder.configure(
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
   } 
+
+private ChassisSpeeds getChassisSpeeds() {
+  return DriveConstants.kDriveKinematics.toChassisSpeeds(
+      m_frontLeft.getState(),
+      m_frontRight.getState(),
+      m_rearLeft.getState(),
+      m_rearRight.getState());
 }
-}*/
+private void runVelocity(WheelSpeeds wheelSpeeds) {
+  m_frontLeft.setDesiredState(wheelSpeeds.frontLeft);
+  m_frontRight.setDesiredState(wheelSpeeds.frontRight);
+  m_rearLeft.setDesiredState(wheelSpeeds.rearLeft);
+  m_rearRight.setDesiredState(wheelSpeeds.rearRight);
 }
