@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
+import frc.robot.Constants;
 import frc.robot.Robot;
 //import edu.wpi.first.wpilibj.ADIS16470_IMU;
 //import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
@@ -210,7 +211,7 @@ public class DriveSubsystem extends SubsystemBase {
     return m_frontLeft;
   }
 
-/* public void setupPathPlanner() {
+ public void setupPathPlanner() {
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
 
@@ -223,7 +224,7 @@ AutoBuilder.configure(
             new PIDConstants(5.0, 0.0, 0.0), 
             new PIDConstants(5.0, 0.0, 0.0)
             ),
-       config,
+       Constants.config,
         () -> {
           var alliance = DriverStation.getAlliance();
           if (alliance.isPresent()) {
@@ -232,7 +233,7 @@ AutoBuilder.configure(
           return false;
         },
         this);
-  } */
+  } 
 
 private ChassisSpeeds getChassisSpeeds() {
   return DriveConstants.kDriveKinematics.toChassisSpeeds(
