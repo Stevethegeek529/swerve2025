@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.RobotConfig;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
@@ -99,4 +103,27 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+
+  // PathPlanner configuration
+  public static final double robotMassKg = 68.00;
+  public static final double robotMOI = 1.537;
+  public static final double wheelCOF = 1.2;
+  public static final double wheelRadiusMeters = 0.048;
+  public static final double maxSpeedMetersPerSec = 5.450;
+  public static final double driveMotorReduction = (45.0 * 22) / (13 * 15);
+  public static final DCMotor driveGearbox = DCMotor.getNeoVortex(1);
+  public static final double driveMotorCurrentLimit = 60.0;
+  public static final RobotConfig config =
+      new RobotConfig(
+          robotMassKg,
+          robotMOI,
+          new ModuleConfig(
+              wheelRadiusMeters,
+              maxSpeedMetersPerSec,
+              wheelCOF,
+              driveGearbox,
+              driveMotorReduction,
+              driveMotorCurrentLimit,
+              1)
+              );
 }

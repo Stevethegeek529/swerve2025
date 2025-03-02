@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
+import frc.robot.Robot;
 //import edu.wpi.first.wpilibj.ADIS16470_IMU;
 //import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import frc.robot.Constants.DriveConstants;
@@ -209,38 +210,29 @@ public class DriveSubsystem extends SubsystemBase {
     return m_frontLeft;
   }
 
-  public void setupPathPlanner() {
+/* public void setupPathPlanner() {
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
-    RobotConfig config;
-    try{
-      config = RobotConfig.fromGUISettings();
-    } catch (Exception e) {
-      // Handle exception as needed
-      e.printStackTrace();
-    }
-    // Configure AutoBuilder last
+
 AutoBuilder.configure(
         this::getPose,
         this::resetOdometry,
         this::getChassisSpeeds,
         this::runVelocity,
         new PPHolonomicDriveController(
-            new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
-        config,
-        () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
+            new PIDConstants(5.0, 0.0, 0.0), 
+            new PIDConstants(5.0, 0.0, 0.0)
+            ),
+       config,
+        () -> {
+          var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+        },
         this);
-    Pathfinding.setPathfinder(new LocalADStarAK());
-    PathPlannerLogging.setLogActivePathCallback(
-        (activePath) -> {
-          Logger.recordOutput(
-              "Odometry/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
-        });
-    PathPlannerLogging.setLogTargetPoseCallback(
-        (targetPose) -> {
-          Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
-        });
-  } 
+  } */
 
 private ChassisSpeeds getChassisSpeeds() {
   return DriveConstants.kDriveKinematics.toChassisSpeeds(
@@ -249,9 +241,16 @@ private ChassisSpeeds getChassisSpeeds() {
       m_rearLeft.getState(),
       m_rearRight.getState());
 }
-private void runVelocity(WheelSpeeds wheelSpeeds) {
-  m_frontLeft.setDesiredState(wheelSpeeds.frontLeft);
-  m_frontRight.setDesiredState(wheelSpeeds.frontRight);
-  m_rearLeft.setDesiredState(wheelSpeeds.rearLeft);
-  m_rearRight.setDesiredState(wheelSpeeds.rearRight);
+private void runVelocity(ChassisSpeeds speeds) {
+  drive(speeds, false);
+}
+
+private void drive(ChassisSpeeds speeds, boolean fieldRelative) {
+  if (fieldRelative)
+    speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getPose().getRotation());
+  speeds = ChassisSpeeds.discretize(speeds, DriveConstants.kMaxSpeedMetersPerSecond);
+  var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+  SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+  setModuleStates(swerveModuleStates);
+}
 }

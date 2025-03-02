@@ -38,7 +38,6 @@ public class ArmSubsystem extends SubsystemBase {
     //armMotor.set(speed);}
   // Method to set the speed of the intake motor
   public void setIntakeMotorSpeed(double speed) {
-    //speed *= 0.9; //reduce intake rollers
     intakeMotor.set(speed);
   }
 
