@@ -38,6 +38,7 @@ public class ArmSubsystem extends SubsystemBase {
     //armMotor.set(speed);}
   // Method to set the speed of the intake motor
   public void setIntakeMotorSpeed(double speed) {
+    //speed *= 0.9; //reduce intake rollers
     intakeMotor.set(speed);
   }
 
@@ -65,9 +66,9 @@ public class ArmSubsystem extends SubsystemBase {
       Boolean rightBumper = m_functionsController.getRightBumper();
 
       if (leftBumper) {
-        setIntakeMotorSpeed(-0.5); // backward
+        setIntakeMotorSpeed(-0.1); // backward
       } else if (rightBumper) {
-        setIntakeMotorSpeed(.5); // forward
+        setIntakeMotorSpeed(.05); // forward
       } else {
         setIntakeMotorSpeed(0); //stop intake motor
       }
