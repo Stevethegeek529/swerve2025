@@ -15,6 +15,8 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -28,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import java.util.List;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /*
@@ -46,11 +49,16 @@ public class RobotContainer {
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_functionsController = new XboxController(1);
-  
+
+  private final SendableChooser<Command> autoChooser;
+
   public RobotContainer() {
     // Initialize subsystems with the functions controller
     m_armSubsystem = new ArmSubsystem(m_functionsController);
     m_elevatorSubsystem = new ElevatorSubsystem(m_functionsController);
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto mode", autoChooser);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -129,7 +137,8 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
     */
-    return new PathPlannerAuto("Test Auto 1");
+    //return new PathPlannerAuto("Test Auto 1");
+    return autoChooser.getSelected();
   }
 
 }
