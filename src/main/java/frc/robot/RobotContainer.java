@@ -50,15 +50,15 @@ public class RobotContainer {
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_functionsController = new XboxController(1);
 
-  private final SendableChooser<Command> autoChooser;
+  //private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
     // Initialize subsystems with the functions controller
     m_armSubsystem = new ArmSubsystem(m_functionsController);
     m_elevatorSubsystem = new ElevatorSubsystem(m_functionsController);
 
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto mode", autoChooser);
+    //autoChooser = AutoBuilder.buildAutoChooser();
+    //SmartDashboard.putData("Auto mode", autoChooser);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -98,7 +98,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-   /* // Create config for trajectory
+    // Create config for trajectory
     TrajectoryConfig config = new TrajectoryConfig(
         AutoConstants.kMaxSpeedMetersPerSecond,
         AutoConstants.kMaxAccelerationMetersPerSecondSquared)
@@ -136,9 +136,9 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
-    */
+    
     //return new PathPlannerAuto("Test Auto 1");
-    return autoChooser.getSelected();
+    //return autoChooser.getSelected();
   }
 
 }
