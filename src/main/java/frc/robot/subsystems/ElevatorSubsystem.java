@@ -68,7 +68,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Controller Y-axis",+ speed); //display the controller input on the SmartDashboard
 
-        double scaledSpeed = speed * .15; //reduce motor speed to 50% of the controller input
+        double scaledSpeed = speed * .25; //reduce motor speed to 50% of the controller input
         setMotorSpeed(scaledSpeed);
 
         SmartDashboard.putNumber("scaledSpeed", scaledSpeed); //display the scaled speed on the SmartDashboard
