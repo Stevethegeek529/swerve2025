@@ -28,7 +28,7 @@ public class ArmSubsystem extends SubsystemBase {
     double position = m_armEncoder.getPosition();
 
     //ensure the arm does not go below the upper or lower limit
-    if ((position <= 0.025 && speed < 0) /*upper limit */ || (position >= 0.3 && speed > 0)) /*lower limit */ {
+    if ((position <= 0.185 && speed < 0) /*upper limit */ || (position >= 0.48 && speed > 0)) /*lower limit */ {
       armMotor.set(0); //stop the motor if it tries to go past the limits
     } else {
       speed *= 0.5; //reduce the speed of the arm motor
