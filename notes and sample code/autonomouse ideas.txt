@@ -1,0 +1,28 @@
+public Command getAutonomousCommand() {
+        return new SequentialCommandGroup(
+            new RunCommand(
+                () -> m_robotDrive.drive(
+                    0.0, 0.0, 1.0, // Rotate in place
+                    true),
+                m_robotDrive).withTimeout(1.5), // Adjust the time as needed to complete 180 degrees
+            new RunCommand(
+                () -> m_robotDrive.drive(
+                    1.0, 0.0, 0.0, // Drive forward
+                    true),
+                m_robotDrive).withTimeout(1.0), // Drive forward for 1 second
+                new RunCommand(
+                        () -> {
+                            double position = m_armSubsystem.getArmPosition();
+                            if (position > 0.185) {
+                                m_armSubsystem.setArmMotorSpeed(-0.5); // Lower the arm
+                            } else {
+                                m_armSubsystem.setArmMotorSpeed(0); // Stop the motor when the position is reached
+                            }
+                        },
+                        m_armSubsystem).withTimeout(2.0) // Adjust the timeout as needed to reach the desired position
+            new RunCommand(
+                () -> m_armSubsystem.setIntakeMotorSpeed(1.0), // Run the intake motor at full speed
+                m_armSubsystem).withTimeout(1.0), // Run the intake motor for 1 second
+
+        );
+    }
